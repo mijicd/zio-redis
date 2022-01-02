@@ -192,15 +192,15 @@ trait ListSpec extends BaseSpec {
         },
         testM("brPopLPush block for 1 second when source does not exist") {
           for {
-            key     <- uuid
-            dest    <- uuid
-            _       <- rPush(dest, "four")
-            st      <- currentTime(TimeUnit.SECONDS)
-            fiber   <- brPopLPush(key, dest, 1.seconds).returning[String].fork
-            _       <- TestClock.adjust(1.second)
-            s       <- fiber.join
-            endTime <- currentTime(TimeUnit.SECONDS)
-          } yield assert(s)(isNone) && assert(endTime - st)(isGreaterThanEqualTo(1L))
+            key       <- uuid
+            dest      <- uuid
+            _         <- rPush(dest, "four")
+            startTime <- currentTime(TimeUnit.SECONDS)
+            fiber     <- brPopLPush(key, dest, 1.seconds).returning[String].fork
+            _         <- TestClock.adjust(1.second)
+            s         <- fiber.join
+            endTime   <- currentTime(TimeUnit.SECONDS)
+          } yield assert(s)(isNone) && assert(endTime - startTime)(isGreaterThanEqualTo(1L))
         },
         testM("brPopLPush error when not list") {
           for {

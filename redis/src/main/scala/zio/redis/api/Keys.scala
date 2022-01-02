@@ -104,8 +104,8 @@ trait Keys {
    * @return
    *   keys matching pattern.
    */
-  final def keys(pattern: String): ResultSchemaBuilder1[Chunk] =
-    new ResultSchemaBuilder1[Chunk] {
+  final def keys(pattern: String): ResultBuilder1[Chunk] =
+    new ResultBuilder1[Chunk] {
       def returning[V: Schema]: ZIO[RedisExecutor, RedisError, Chunk[V]] =
         RedisCommand(Keys.Keys, StringInput, ChunkOutput(ArbitraryOutput[V]())).run(pattern)
     }
@@ -248,8 +248,8 @@ trait Keys {
    * @return
    *   key or None when the database is empty.
    */
-  final def randomKey: ResultSchemaBuilder1[Option] =
-    new ResultSchemaBuilder1[Option] {
+  final def randomKey: ResultBuilder1[Option] =
+    new ResultBuilder1[Option] {
       def returning[V: Schema]: ZIO[RedisExecutor, RedisError, Option[V]] =
         RedisCommand(RandomKey, NoInput, OptionalOutput(ArbitraryOutput[V]())).run(())
     }
@@ -352,8 +352,8 @@ trait Keys {
     pattern: Option[String] = None,
     count: Option[Count] = None,
     `type`: Option[RedisType] = None
-  ): ResultSchemaBuilder1[({ type lambda[x] = (Long, Chunk[x]) })#lambda] =
-    new ResultSchemaBuilder1[({ type lambda[x] = (Long, Chunk[x]) })#lambda] {
+  ): ResultBuilder1[({ type lambda[x] = (Long, Chunk[x]) })#lambda] =
+    new ResultBuilder1[({ type lambda[x] = (Long, Chunk[x]) })#lambda] {
       def returning[K: Schema]: ZIO[RedisExecutor, RedisError, (Long, Chunk[K])] = {
         val command = RedisCommand(
           Scan,
@@ -389,8 +389,8 @@ trait Keys {
     order: Order = Order.Ascending,
     get: Option[(String, List[String])] = None,
     alpha: Option[Alpha] = None
-  ): ResultSchemaBuilder1[Chunk] =
-    new ResultSchemaBuilder1[Chunk] {
+  ): ResultBuilder1[Chunk] =
+    new ResultBuilder1[Chunk] {
       def returning[V: Schema]: ZIO[RedisExecutor, RedisError, Chunk[V]] = {
         val command = RedisCommand(
           Sort,

@@ -60,8 +60,8 @@ trait Streams {
     id: I,
     pair: (K, V),
     pairs: (K, V)*
-  ): ResultSchemaBuilder1[Id] =
-    new ResultSchemaBuilder1[Id] {
+  ): ResultBuilder1[Id] =
+    new ResultBuilder1[Id] {
       def returning[R: Schema]: ZIO[RedisExecutor, RedisError, Id[R]] = {
         val command = RedisCommand(
           XAdd,
@@ -87,7 +87,7 @@ trait Streams {
    */
   final def xInfoStream[SK: Schema](
     key: SK
-  ): ResultSchemaBuilder3[StreamInfo] = new ResultSchemaBuilder3[StreamInfo] {
+  ): ResultBuilder3[StreamInfo] = new ResultBuilder3[StreamInfo] {
     def returning[RI: Schema, RK: Schema, RV: Schema]: ZIO[RedisExecutor, RedisError, StreamInfo[RI, RK, RV]] = {
       val command = RedisCommand(XInfoStream, ArbitraryInput[SK](), StreamInfoOutput[RI, RK, RV]())
       command.run(key)
@@ -104,7 +104,7 @@ trait Streams {
    */
   final def xInfoStreamFull[SK: Schema](
     key: SK
-  ): ResultSchemaBuilder3[FullStreamInfo] = new ResultSchemaBuilder3[FullStreamInfo] {
+  ): ResultBuilder3[FullStreamInfo] = new ResultBuilder3[FullStreamInfo] {
     def returning[RI: Schema, RK: Schema, RV: Schema]: ZIO[RedisExecutor, RedisError, FullStreamInfo[RI, RK, RV]] = {
       val command = RedisCommand(
         XInfoStream,
@@ -128,7 +128,7 @@ trait Streams {
   final def xInfoStreamFull[SK: Schema](
     key: SK,
     count: Long
-  ): ResultSchemaBuilder3[FullStreamInfo] = new ResultSchemaBuilder3[FullStreamInfo] {
+  ): ResultBuilder3[FullStreamInfo] = new ResultBuilder3[FullStreamInfo] {
     def returning[RI: Schema, RK: Schema, RV: Schema]: ZIO[RedisExecutor, RedisError, FullStreamInfo[RI, RK, RV]] = {
       val command = RedisCommand(
         XInfoStream,
@@ -197,8 +197,8 @@ trait Streams {
   )(
     pair: (K, V),
     pairs: (K, V)*
-  ): ResultSchemaBuilder1[Id] =
-    new ResultSchemaBuilder1[Id] {
+  ): ResultBuilder1[Id] =
+    new ResultBuilder1[Id] {
       def returning[R: Schema]: ZIO[RedisExecutor, RedisError, Id[R]] = {
         val command = RedisCommand(
           XAdd,
@@ -250,9 +250,9 @@ trait Streams {
     time: Option[Duration] = None,
     retryCount: Option[Long] = None,
     force: Boolean = false
-  )(id: I, ids: I*): ResultSchemaBuilder2[({ type lambda[x, y] = StreamEntries[I, x, y] })#lambda] =
-    new ResultSchemaBuilder2[({ type lambda[x, y] = StreamEntries[I, x, y] })#lambda] {
-      override def returning[RK: Schema, RV: Schema]: ZIO[RedisExecutor, RedisError, StreamEntries[I, RK, RV]] = {
+  )(id: I, ids: I*): ResultBuilder2[({ type lambda[x, y] = StreamEntries[I, x, y] })#lambda] =
+    new ResultBuilder2[({ type lambda[x, y] = StreamEntries[I, x, y] })#lambda] {
+      def returning[RK: Schema, RV: Schema]: ZIO[RedisExecutor, RedisError, StreamEntries[I, RK, RV]] = {
         val command = RedisCommand(
           XClaim,
           Tuple9(
@@ -309,8 +309,8 @@ trait Streams {
     time: Option[Duration] = None,
     retryCount: Option[Long] = None,
     force: Boolean = false
-  )(id: I, ids: I*): ResultSchemaBuilder1[Chunk] =
-    new ResultSchemaBuilder1[Chunk] {
+  )(id: I, ids: I*): ResultBuilder1[Chunk] =
+    new ResultBuilder1[Chunk] {
       def returning[R: Schema]: ZIO[RedisExecutor, RedisError, Chunk[R]] = {
         val command = RedisCommand(
           XClaim,
@@ -539,9 +539,9 @@ trait Streams {
     key: SK,
     start: I,
     end: I
-  ): ResultSchemaBuilder2[({ type lambda[x, y] = StreamEntries[I, x, y] })#lambda] =
-    new ResultSchemaBuilder2[({ type lambda[x, y] = StreamEntries[I, x, y] })#lambda] {
-      override def returning[RK: Schema, RV: Schema]: ZIO[RedisExecutor, RedisError, StreamEntries[I, RK, RV]] = {
+  ): ResultBuilder2[({ type lambda[x, y] = StreamEntries[I, x, y] })#lambda] =
+    new ResultBuilder2[({ type lambda[x, y] = StreamEntries[I, x, y] })#lambda] {
+      def returning[RK: Schema, RV: Schema]: ZIO[RedisExecutor, RedisError, StreamEntries[I, RK, RV]] = {
         val command = RedisCommand(
           XRange,
           Tuple4(ArbitraryInput[SK](), ArbitraryInput[I](), ArbitraryInput[I](), OptionalInput(CountInput)),
@@ -570,9 +570,9 @@ trait Streams {
     start: I,
     end: I,
     count: Long
-  ): ResultSchemaBuilder2[({ type lambda[x, y] = StreamEntries[I, x, y] })#lambda] =
-    new ResultSchemaBuilder2[({ type lambda[x, y] = StreamEntries[I, x, y] })#lambda] {
-      override def returning[RK: Schema, RV: Schema]: ZIO[RedisExecutor, RedisError, StreamEntries[I, RK, RV]] = {
+  ): ResultBuilder2[({ type lambda[x, y] = StreamEntries[I, x, y] })#lambda] =
+    new ResultBuilder2[({ type lambda[x, y] = StreamEntries[I, x, y] })#lambda] {
+      def returning[RK: Schema, RV: Schema]: ZIO[RedisExecutor, RedisError, StreamEntries[I, RK, RV]] = {
         val command = RedisCommand(
           XRange,
           Tuple4(ArbitraryInput[SK](), ArbitraryInput[I](), ArbitraryInput[I](), OptionalInput(CountInput)),
@@ -602,9 +602,9 @@ trait Streams {
   )(
     stream: (SK, I),
     streams: (SK, I)*
-  ): ResultSchemaBuilder2[({ type lambda[x, y] = StreamChunks[SK, I, x, y] })#lambda] =
-    new ResultSchemaBuilder2[({ type lambda[x, y] = StreamChunks[SK, I, x, y] })#lambda] {
-      override def returning[RK: Schema, RV: Schema]: ZIO[RedisExecutor, RedisError, StreamChunks[SK, I, RK, RV]] = {
+  ): ResultBuilder2[({ type lambda[x, y] = StreamChunks[SK, I, x, y] })#lambda] =
+    new ResultBuilder2[({ type lambda[x, y] = StreamChunks[SK, I, x, y] })#lambda] {
+      def returning[RK: Schema, RV: Schema]: ZIO[RedisExecutor, RedisError, StreamChunks[SK, I, RK, RV]] = {
         val command = RedisCommand(
           XRead,
           Tuple3(OptionalInput(CountInput), OptionalInput(BlockInput), StreamsInput[SK, I]()),
@@ -643,9 +643,9 @@ trait Streams {
   )(
     stream: (SK, I),
     streams: (SK, I)*
-  ): ResultSchemaBuilder2[({ type lambda[x, y] = StreamChunks[SK, I, x, y] })#lambda] =
-    new ResultSchemaBuilder2[({ type lambda[x, y] = StreamChunks[SK, I, x, y] })#lambda] {
-      override def returning[RK: Schema, RV: Schema]: ZIO[RedisExecutor, RedisError, StreamChunks[SK, I, RK, RV]] = {
+  ): ResultBuilder2[({ type lambda[x, y] = StreamChunks[SK, I, x, y] })#lambda] =
+    new ResultBuilder2[({ type lambda[x, y] = StreamChunks[SK, I, x, y] })#lambda] {
+      def returning[RK: Schema, RV: Schema]: ZIO[RedisExecutor, RedisError, StreamChunks[SK, I, RK, RV]] = {
         val command = RedisCommand(
           XReadGroup,
           Tuple6(
@@ -679,9 +679,9 @@ trait Streams {
     key: SK,
     end: I,
     start: I
-  ): ResultSchemaBuilder2[({ type lambda[x, y] = StreamEntries[I, x, y] })#lambda] =
-    new ResultSchemaBuilder2[({ type lambda[x, y] = StreamEntries[I, x, y] })#lambda] {
-      override def returning[RK: Schema, RV: Schema]: ZIO[RedisExecutor, RedisError, StreamEntries[I, RK, RV]] = {
+  ): ResultBuilder2[({ type lambda[x, y] = StreamEntries[I, x, y] })#lambda] =
+    new ResultBuilder2[({ type lambda[x, y] = StreamEntries[I, x, y] })#lambda] {
+      def returning[RK: Schema, RV: Schema]: ZIO[RedisExecutor, RedisError, StreamEntries[I, RK, RV]] = {
         val command = RedisCommand(
           XRevRange,
           Tuple4(ArbitraryInput[SK](), ArbitraryInput[I](), ArbitraryInput[I](), OptionalInput(CountInput)),
@@ -710,9 +710,9 @@ trait Streams {
     end: I,
     start: I,
     count: Long
-  ): ResultSchemaBuilder2[({ type lambda[x, y] = StreamEntries[I, x, y] })#lambda] =
-    new ResultSchemaBuilder2[({ type lambda[x, y] = StreamEntries[I, x, y] })#lambda] {
-      override def returning[RK: Schema, RV: Schema]: ZIO[RedisExecutor, RedisError, StreamEntries[I, RK, RV]] = {
+  ): ResultBuilder2[({ type lambda[x, y] = StreamEntries[I, x, y] })#lambda] =
+    new ResultBuilder2[({ type lambda[x, y] = StreamEntries[I, x, y] })#lambda] {
+      def returning[RK: Schema, RV: Schema]: ZIO[RedisExecutor, RedisError, StreamEntries[I, RK, RV]] = {
         val command = RedisCommand(
           XRevRange,
           Tuple4(ArbitraryInput[SK](), ArbitraryInput[I](), ArbitraryInput[I](), OptionalInput(CountInput)),
