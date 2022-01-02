@@ -265,7 +265,6 @@ trait Lists {
     command.run((key, (element, elements.toList)))
   }
 
-  // TODO kind-projector??
   /**
    * Removes and gets the first element in a list, or blocks until one is available. An element is popped from the head
    * of the first list that is non-empty, with the given keys being checked in the order that they are given.
@@ -283,8 +282,8 @@ trait Lists {
    */
   final def blPop[K: Schema](key: K, keys: K*)(
     timeout: Duration
-  ): ResultSchemaBuilder1[({ type lambda[+x] = Option[(K, x)] })#lambda] =
-    new ResultSchemaBuilder1[({ type lambda[+x] = Option[(K, x)] })#lambda] {
+  ): ResultSchemaBuilder1[({ type lambda[x] = Option[(K, x)] })#lambda] =
+    new ResultSchemaBuilder1[({ type lambda[x] = Option[(K, x)] })#lambda] {
       override def returning[V: Schema]: ZIO[RedisExecutor, RedisError, Option[(K, V)]] = {
         val command = RedisCommand(
           BlPop,
@@ -295,7 +294,6 @@ trait Lists {
       }
     }
 
-  // TODO kind-projector??
   /**
    * Removes and gets the last element in a list, or block until one is available. An element is popped from the tail of
    * the first list that is non-empty, with the given keys being checked in the order that they are given.
@@ -313,8 +311,8 @@ trait Lists {
    */
   final def brPop[K: Schema](key: K, keys: K*)(
     timeout: Duration
-  ): ResultSchemaBuilder1[({ type lambda[+x] = Option[(K, x)] })#lambda] =
-    new ResultSchemaBuilder1[({ type lambda[+x] = Option[(K, x)] })#lambda] {
+  ): ResultSchemaBuilder1[({ type lambda[x] = Option[(K, x)] })#lambda] =
+    new ResultSchemaBuilder1[({ type lambda[x] = Option[(K, x)] })#lambda] {
       override def returning[V: Schema]: ZIO[RedisExecutor, RedisError, Option[(K, V)]] = {
         val command = RedisCommand(
           BrPop,

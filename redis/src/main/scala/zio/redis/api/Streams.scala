@@ -214,7 +214,6 @@ trait Streams {
       }
     }
 
-  // TODO: king-projector???
   /**
    * Changes the ownership of a pending message.
    *
@@ -524,7 +523,6 @@ trait Streams {
     command.run((key, group, idle, start, end, count, consumer))
   }
 
-  // TODO: kind-projector???
   /**
    * Fetches the stream entries matching a given range of IDs.
    *
@@ -553,7 +551,6 @@ trait Streams {
       }
     }
 
-  // TODO: kind-projector?
   /**
    * Fetches the stream entries matching a given range of IDs.
    *
@@ -585,7 +582,6 @@ trait Streams {
       }
     }
 
-  // TODO: kind-projector?
   /**
    * Read data from one or multiple streams.
    *
@@ -618,7 +614,6 @@ trait Streams {
       }
     }
 
-  // TODO: how to handle this output
   /**
    * Read data from one or multiple streams using consumer group.
    *
@@ -668,7 +663,6 @@ trait Streams {
       }
     }
 
-  // TODO: king-projector??
   /**
    * Fetches the stream entries matching a given range of IDs in the reverse order.
    *
@@ -697,7 +691,6 @@ trait Streams {
       }
     }
 
-  // TODO: kind-projector??
   /**
    * Fetches the stream entries matching a given range of IDs in the reverse order.
    *
