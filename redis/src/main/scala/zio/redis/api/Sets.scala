@@ -1,10 +1,11 @@
 package zio.redis.api
 
+import zio.{Chunk, ZIO}
+import zio.redis._
 import zio.redis.Input._
 import zio.redis.Output._
-import zio.redis._
+import zio.redis.ResultBuilder._
 import zio.schema.Schema
-import zio.{Chunk, ZIO}
 
 trait Sets {
   import Sets._

@@ -2,12 +2,13 @@ package zio.redis.api
 
 import java.time.Instant
 
+import zio.{Chunk, ZIO}
 import zio.duration._
+import zio.redis._
 import zio.redis.Input._
 import zio.redis.Output._
-import zio.redis._
+import zio.redis.ResultBuilder._
 import zio.schema.Schema
-import zio.{Chunk, ZIO}
 
 trait Strings {
   import Strings._

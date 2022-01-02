@@ -1,16 +1,17 @@
 package zio.redis.api
 
+import zio.{Chunk, ZIO}
 import zio.duration._
+import zio.redis._
 import zio.redis.Input._
 import zio.redis.Output._
-import zio.redis._
+import zio.redis.ResultBuilder._
 import zio.schema.Schema
-import zio.{Chunk, ZIO}
 
 trait Streams {
+  import StreamInfoWithFull._
   import Streams._
   import XGroupCommand._
-  import StreamInfoWithFull._
 
   /**
    * Removes one or multiple messages from the pending entries list (PEL) of a stream consumer group.
