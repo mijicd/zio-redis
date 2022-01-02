@@ -214,6 +214,7 @@ trait Streams {
       }
     }
 
+  // TODO: king-projector???
   /**
    * Changes the ownership of a pending message.
    *
@@ -250,8 +251,8 @@ trait Streams {
     time: Option[Duration] = None,
     retryCount: Option[Long] = None,
     force: Boolean = false
-  )(id: I, ids: I*): ResultSchemaBuilder2[StreamEntries[I, *, *]] =
-    new ResultSchemaBuilder2[StreamEntries[I, *, *]] {
+  )(id: I, ids: I*): ResultSchemaBuilder2[({ type lambda[x, y] = StreamEntries[I, x, y] })#lambda] =
+    new ResultSchemaBuilder2[({ type lambda[x, y] = StreamEntries[I, x, y] })#lambda] {
       override def returning[RK: Schema, RV: Schema]: ZIO[RedisExecutor, RedisError, StreamEntries[I, RK, RV]] = {
         val command = RedisCommand(
           XClaim,
@@ -523,6 +524,7 @@ trait Streams {
     command.run((key, group, idle, start, end, count, consumer))
   }
 
+  // TODO: kind-projector???
   /**
    * Fetches the stream entries matching a given range of IDs.
    *
@@ -539,8 +541,8 @@ trait Streams {
     key: SK,
     start: I,
     end: I
-  ): ResultSchemaBuilder2[StreamEntries[I, *, *]] =
-    new ResultSchemaBuilder2[StreamEntries[I, *, *]] {
+  ): ResultSchemaBuilder2[({ type lambda[x, y] = StreamEntries[I, x, y] })#lambda] =
+    new ResultSchemaBuilder2[({ type lambda[x, y] = StreamEntries[I, x, y] })#lambda] {
       override def returning[RK: Schema, RV: Schema]: ZIO[RedisExecutor, RedisError, StreamEntries[I, RK, RV]] = {
         val command = RedisCommand(
           XRange,
@@ -551,6 +553,7 @@ trait Streams {
       }
     }
 
+  // TODO: kind-projector?
   /**
    * Fetches the stream entries matching a given range of IDs.
    *
@@ -570,8 +573,8 @@ trait Streams {
     start: I,
     end: I,
     count: Long
-  ): ResultSchemaBuilder2[StreamEntries[I, *, *]] =
-    new ResultSchemaBuilder2[StreamEntries[I, *, *]] {
+  ): ResultSchemaBuilder2[({ type lambda[x, y] = StreamEntries[I, x, y] })#lambda] =
+    new ResultSchemaBuilder2[({ type lambda[x, y] = StreamEntries[I, x, y] })#lambda] {
       override def returning[RK: Schema, RV: Schema]: ZIO[RedisExecutor, RedisError, StreamEntries[I, RK, RV]] = {
         val command = RedisCommand(
           XRange,
@@ -582,6 +585,7 @@ trait Streams {
       }
     }
 
+  // TODO: kind-projector?
   /**
    * Read data from one or multiple streams.
    *
@@ -602,8 +606,8 @@ trait Streams {
   )(
     stream: (SK, I),
     streams: (SK, I)*
-  ): ResultSchemaBuilder2[StreamChunks[SK, I, *, *]] =
-    new ResultSchemaBuilder2[StreamChunks[SK, I, *, *]] {
+  ): ResultSchemaBuilder2[({ type lambda[x, y] = StreamChunks[SK, I, x, y] })#lambda] =
+    new ResultSchemaBuilder2[({ type lambda[x, y] = StreamChunks[SK, I, x, y] })#lambda] {
       override def returning[RK: Schema, RV: Schema]: ZIO[RedisExecutor, RedisError, StreamChunks[SK, I, RK, RV]] = {
         val command = RedisCommand(
           XRead,
@@ -614,6 +618,7 @@ trait Streams {
       }
     }
 
+  // TODO: how to handle this output
   /**
    * Read data from one or multiple streams using consumer group.
    *
@@ -643,8 +648,8 @@ trait Streams {
   )(
     stream: (SK, I),
     streams: (SK, I)*
-  ): ResultSchemaBuilder2[StreamChunks[SK, I, *, *]] =
-    new ResultSchemaBuilder2[StreamChunks[SK, I, *, *]] {
+  ): ResultSchemaBuilder2[({ type lambda[x, y] = StreamChunks[SK, I, x, y] })#lambda] =
+    new ResultSchemaBuilder2[({ type lambda[x, y] = StreamChunks[SK, I, x, y] })#lambda] {
       override def returning[RK: Schema, RV: Schema]: ZIO[RedisExecutor, RedisError, StreamChunks[SK, I, RK, RV]] = {
         val command = RedisCommand(
           XReadGroup,
@@ -663,6 +668,7 @@ trait Streams {
       }
     }
 
+  // TODO: king-projector??
   /**
    * Fetches the stream entries matching a given range of IDs in the reverse order.
    *
@@ -679,8 +685,8 @@ trait Streams {
     key: SK,
     end: I,
     start: I
-  ): ResultSchemaBuilder2[StreamEntries[I, *, *]] =
-    new ResultSchemaBuilder2[StreamEntries[I, *, *]] {
+  ): ResultSchemaBuilder2[({ type lambda[x, y] = StreamEntries[I, x, y] })#lambda] =
+    new ResultSchemaBuilder2[({ type lambda[x, y] = StreamEntries[I, x, y] })#lambda] {
       override def returning[RK: Schema, RV: Schema]: ZIO[RedisExecutor, RedisError, StreamEntries[I, RK, RV]] = {
         val command = RedisCommand(
           XRevRange,
@@ -691,6 +697,7 @@ trait Streams {
       }
     }
 
+  // TODO: kind-projector??
   /**
    * Fetches the stream entries matching a given range of IDs in the reverse order.
    *
@@ -710,8 +717,8 @@ trait Streams {
     end: I,
     start: I,
     count: Long
-  ): ResultSchemaBuilder2[StreamEntries[I, *, *]] =
-    new ResultSchemaBuilder2[StreamEntries[I, *, *]] {
+  ): ResultSchemaBuilder2[({ type lambda[x, y] = StreamEntries[I, x, y] })#lambda] =
+    new ResultSchemaBuilder2[({ type lambda[x, y] = StreamEntries[I, x, y] })#lambda] {
       override def returning[RK: Schema, RV: Schema]: ZIO[RedisExecutor, RedisError, StreamEntries[I, RK, RV]] = {
         val command = RedisCommand(
           XRevRange,

@@ -225,6 +225,8 @@ trait Sets {
     command.run((key, (member, members.toList)))
   }
 
+  type Scan1[+R] = (Long, Chunk[R])
+  // TODO: kind-projector?
   /**
    * Incrementally iterate Set elements.
    *
@@ -247,8 +249,8 @@ trait Sets {
     cursor: Long,
     pattern: Option[String] = None,
     count: Option[Count] = None
-  ): ResultSchemaBuilder1[Lambda[x => (Long, Chunk[x])]] = new ResultSchemaBuilder1[Lambda[x => (Long, Chunk[x])]] {
-    override def returning[R: Schema]: ZIO[RedisExecutor, RedisError, (Long, Chunk[R])] = {
+  ): ResultSchemaBuilder1[Scan1] = new ResultSchemaBuilder1[Scan1] {
+    override def returning[R: Schema]: ZIO[RedisExecutor, RedisError, Scan1[R]] = {
       val command = RedisCommand(
         SScan,
         Tuple4(ArbitraryInput[K](), LongInput, OptionalInput(PatternInput), OptionalInput(CountInput)),
