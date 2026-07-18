@@ -10,7 +10,7 @@ object Dependencies {
     val Slf4jSimple       = "2.0.17"
     val Sttp              = "4.0.21"
     val TlsChannel        = "1.0.0"
-    val ZioConfig         = "4.0.7"
+    val ZioConfig         = "4.0.8"
     val ZioJson           = "0.9.1"
     val ZioSchema         = "1.8.3"
     val ZioTestContainers = "0.6.0"
